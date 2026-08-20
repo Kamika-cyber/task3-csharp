@@ -3,7 +3,11 @@ using System.Numerics;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/kk_issabay_gmail_com", GetLowestCommonMultiple);
+app.MapGet("/kk_issabay_gmail_com", (string? x, string? y) =>
+{
+    string result = GetLowestCommonMultiple(x, y);
+    return Results.Text(result, "text/plain");
+});
 
 app.Run();
 
