@@ -1,6 +1,24 @@
 # Task 3
 
-C# ASP.NET Core web method for finding the lowest common multiple of two natural numbers.
+ASP.NET Core web method that returns the lowest common multiple of two natural numbers.
+
+## Endpoint
+
+```text
+GET /kk_issabay_gmail_com?x={number}&y={number}
+```
+
+Example:
+
+```text
+http://task3kk.somee.com/kk_issabay_gmail_com?x=12&y=18
+```
+
+Response:
+
+```text
+36
+```
 
 ## Run locally
 
@@ -8,38 +26,26 @@ C# ASP.NET Core web method for finding the lowest common multiple of two natural
 dotnet run --project Task3.csproj
 ```
 
-Then open:
+Local URL:
 
 ```text
 http://localhost:5211/kk_issabay_gmail_com?x=12&y=18
 ```
 
-The result should be:
-
-```text
-36
-```
-
-## Rules
+## Validation
 
 - `x` and `y` must be natural numbers: digits only and greater than `0`.
-- If one value is missing, zero, negative, or not a number, the response is exactly `NaN`.
+- If one value is missing, zero, negative, or not a number, the response is `NaN`.
 - The response is plain text, not HTML or JSON.
 
-## Submission URL
+## Examples
 
-Email: `kk.issabay@gmail.com`
-
-Path: `kk_issabay_gmail_com`
-
-Submit using this format:
-
-```text
-!task3 kk.issabay@gmail.com https://PASTE_YOUR_DEPLOYED_SITE_HERE/kk_issabay_gmail_com?x={}&y={}
-```
-
-Do not submit `localhost` or `PASTE_YOUR_DEPLOYED_SITE_HERE`.
-Use the real public URL from the hosting site.
+| Request | Response |
+| --- | --- |
+| `?x=12&y=18` | `36` |
+| `?x=10&y=15` | `30` |
+| `?x=0&y=5` | `NaN` |
+| `?x=abc&y=5` | `NaN` |
 
 ## Publish
 
@@ -49,16 +55,10 @@ Create a publish folder:
 dotnet publish Task3.csproj -c Release -o publish
 ```
 
-Upload the files from the `publish` folder to the website on Somee.
+Upload the files from the `publish` folder to the website root on Somee.
 
-After deployment, check the public URL:
+## Project Files
 
-```text
-https://your-site.somee.com/kk_issabay_gmail_com?x=12&y=18
-```
-
-The page should contain only:
-
-```text
-36
-```
+- `Program.cs` contains the endpoint and LCM calculation.
+- `Task3.csproj` contains project settings.
+- `appsettings.json` contains ASP.NET Core configuration.
