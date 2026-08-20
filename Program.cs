@@ -2,8 +2,16 @@ using System.Numerics;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+string? port = Environment.GetEnvironmentVariable("PORT");
+
+if (!string.IsNullOrWhiteSpace(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+else if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+{
+    builder.WebHost.UseUrls("http://0.0.0.0:10000");
+}
 
 var app = builder.Build();
 
