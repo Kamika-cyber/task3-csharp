@@ -41,17 +41,24 @@ Submit using this format:
 Do not submit `localhost` or `PASTE_YOUR_DEPLOYED_SITE_HERE`.
 Use the real public URL from the hosting site.
 
-## Deploy
+## Publish
 
-1. Create a public GitHub repository.
-2. Push this project to the repository.
-3. Create a new Web Service on Render.
-4. Connect the GitHub repository.
-5. Select Docker as the runtime.
-6. Deploy the service.
+Create a publish folder:
 
-After deployment, check:
+```powershell
+dotnet publish Task3.csproj -c Release -o publish
+```
+
+Upload the files from the `publish` folder to the website on Somee.
+
+After deployment, check the public URL:
 
 ```text
-https://your-render-service.onrender.com/kk_issabay_gmail_com?x=12&y=18
+https://your-site.somee.com/kk_issabay_gmail_com?x=12&y=18
+```
+
+The page should contain only:
+
+```text
+36
 ```
