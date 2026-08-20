@@ -1,21 +1,17 @@
 using System.Numerics;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 var app = builder.Build();
 
+app.MapGet("/healthz", () => "OK");
 app.MapGet("/kk_issabay_gmail_com", (string? x, string? y) => FindLcm(x, y));
 app.MapGet("/{*path}", (string? x, string? y) => FindLcm(x, y));
 
-string? port = Environment.GetEnvironmentVariable("PORT");
-
-if (string.IsNullOrEmpty(port))
-{
-    app.Run();
-}
-else
-{
-    app.Run($"http://0.0.0.0:{port}");
-}
+app.Run();
 
 static string FindLcm(string? xText, string? yText)
 {
