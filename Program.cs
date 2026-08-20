@@ -1,49 +1,38 @@
 using System.Numerics;
 
 var builder = WebApplication.CreateBuilder(args);
-
-string? port = Environment.GetEnvironmentVariable("PORT");
-
-if (!string.IsNullOrWhiteSpace(port))
-{
-    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-}
-else if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
-{
-    builder.WebHost.UseUrls("http://0.0.0.0:10000");
-}
-
 var app = builder.Build();
 
-app.MapGet("/healthz", () => "OK");
-app.MapGet("/kk_issabay_gmail_com", (string? x, string? y) => FindLcm(x, y));
-app.MapGet("/{*path}", (string? x, string? y) => FindLcm(x, y));
+app.MapGet("/kk_issabay_gmail_com", GetLowestCommonMultiple);
 
 app.Run();
 
-static string FindLcm(string? xText, string? yText)
+static string GetLowestCommonMultiple(string? x, string? y)
 {
-    if (!TryReadNaturalNumber(xText, out BigInteger x) ||
-        !TryReadNaturalNumber(yText, out BigInteger y))
+    if (!TryParseNaturalNumber(x, out BigInteger firstNumber) ||
+        !TryParseNaturalNumber(y, out BigInteger secondNumber))
     {
         return "NaN";
     }
 
-    return (x / GreatestCommonDivisor(x, y) * y).ToString();
+    BigInteger greatestCommonDivisor = GetGreatestCommonDivisor(firstNumber, secondNumber);
+    BigInteger lowestCommonMultiple = firstNumber / greatestCommonDivisor * secondNumber;
+
+    return lowestCommonMultiple.ToString();
 }
 
-static bool TryReadNaturalNumber(string? text, out BigInteger number)
+static bool TryParseNaturalNumber(string? text, out BigInteger number)
 {
     number = BigInteger.Zero;
 
-    if (string.IsNullOrWhiteSpace(text))
+    if (string.IsNullOrEmpty(text))
     {
         return false;
     }
 
-    foreach (char symbol in text)
+    foreach (char character in text)
     {
-        if (symbol < '0' || symbol > '9')
+        if (character < '0' || character > '9')
         {
             return false;
         }
@@ -53,14 +42,14 @@ static bool TryReadNaturalNumber(string? text, out BigInteger number)
     return number > BigInteger.Zero;
 }
 
-static BigInteger GreatestCommonDivisor(BigInteger a, BigInteger b)
+static BigInteger GetGreatestCommonDivisor(BigInteger firstNumber, BigInteger secondNumber)
 {
-    while (b != BigInteger.Zero)
+    while (secondNumber != BigInteger.Zero)
     {
-        BigInteger remainder = a % b;
-        a = b;
-        b = remainder;
+        BigInteger remainder = firstNumber % secondNumber;
+        firstNumber = secondNumber;
+        secondNumber = remainder;
     }
 
-    return a;
+    return firstNumber;
 }
